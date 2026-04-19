@@ -29,7 +29,7 @@
     // Configuration Lead Balance
     LEAD_BALANCE: {
       triggerHeader: "Lead_balance",
-      endpoint: "http://127.0.0.1:5000/lead-balance/process-excel",
+      endpoint: (window.CLARA_BACKEND_URL || 'http://localhost:5000') + '/lead-balance/process-excel',
       acceptedFormats: [".xlsx", ".xls"],
       maxFileSize: 10 * 1024 * 1024, // 10 MB
       description: "Lead Balance"

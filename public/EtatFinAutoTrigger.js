@@ -29,7 +29,7 @@
     // Configuration États Financiers
     ETAT_FIN: {
       triggerHeader: "Etat_fin",
-      endpoint: "http://127.0.0.1:5000/etats-financiers/process-excel",
+      endpoint: (window.CLARA_BACKEND_URL || 'http://localhost:5000') + '/etats-financiers/process-excel',
       acceptedFormats: [".xlsx", ".xls"],
       maxFileSize: 10 * 1024 * 1024, // 10 MB
       description: "États Financiers SYSCOHADA"
