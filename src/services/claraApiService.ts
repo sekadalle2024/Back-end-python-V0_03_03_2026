@@ -39,6 +39,7 @@ export class ClaraApiService {
   private readonly SENTINEL_LEAD_BALANCE = "__INTERNAL__LEAD_BALANCE__";
   private readonly SENTINEL_ETAT_FIN = "__INTERNAL__ETAT_FIN__";
   private readonly SENTINEL_TEMPLATE_TABLE = "__INTERNAL__TEMPLATE_TABLE__";
+  private readonly SENTINEL_EDITEUR = "__INTERNAL__EDITEUR__";
 
   /**
    * Router n8n – Switch-case JavaScript avec informations de routing
@@ -143,6 +144,12 @@ export class ClaraApiService {
     } else if (msg.includes("Etat fin")) {
       routeKey = "etat_fin";
       caseName = "Case 24";
+    }
+    
+    // Case 44: Editeur (Test de switch backend)
+    else if (msg.includes("Editeur") || msg.includes("editeur")) {
+      routeKey = "editeur";
+      caseName = "Case 44";
     }
     
     // Cases 35-43: Templates de tables (génération locale)
@@ -276,6 +283,8 @@ export class ClaraApiService {
         return "https://n8nauditpro.zeabur.app/webhook/recos_revision";
       case "etat_fin":
         return this.SENTINEL_ETAT_FIN;
+      case "editeur":
+        return this.SENTINEL_EDITEUR;
       case "recos_controle_interne":
         return "https://n8nauditpro.zeabur.app/webhook/recos_contrôle_interne_comptable";
       case "recos_revision_comptes":
@@ -1902,6 +1911,33 @@ export class ClaraApiService {
           timestamp: new Date(),
           metadata: { 
             model: "local"
+          },
+        };
+      }
+
+      // ── Case 44 : Editeur – Test de switch backend ──────
+      if (resolvedEndpoint === this.SENTINEL_EDITEUR) {
+        console.log("🧪 [Editeur] Test de switch backend - Déclenchement automatique");
+        
+        // Créer une table unicolonne avec entête "Editeur"
+        // Le script EditeurAutoTrigger.js détectera cette table automatiquement
+        // et enverra la commande au backend
+        const initialContent =
+          "| Editeur |\n" +
+          "|----------|\n" +
+          "| editeur |";
+        
+        // Retourner la table initiale
+        // La logique de test sera gérée automatiquement par EditeurAutoTrigger.js
+        return {
+          id: `${Date.now()}-editeur`,
+          role: "assistant",
+          content: initialContent,
+          timestamp: new Date(),
+          metadata: { 
+            model: "local",
+            caseName: "Case 44",
+            routeKey: "editeur"
           },
         };
       }
